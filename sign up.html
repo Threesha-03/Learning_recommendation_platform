@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - AI Learning Platform</title>
+  <link rel="stylesheet" href="learn.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 100px auto;
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      text-align: center;
+      color: #4CAF50;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1em;
+    }
+
+    button {
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    p {
+      text-align: center;
+    }
+
+    a {
+      color: #4CAF50;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Sign Up</h1>
+    <form id="signUpForm">
+      <label for="newUsername">Username:</label>
+      <input type="text" id="newUsername" placeholder="Choose a username" required>
+      <label for="newPassword">Password:</label>
+      <input type="password" id="newPassword" placeholder="Create a password" required>
+      <button type="button" onclick="signUp()">Sign Up</button>
+    </form>
+    <p>Already have an account? <a href="login.html">Login</a></p>
+  </div>
+  <script>
+    function validatePassword(password) {
+      // Minimum eight characters, at least one uppercase letter, one lowercase letter, one number, and one special character
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      return passwordRegex.test(password);
+    }
+
+    function signUp() {
+      const username = document.getElementById("newUsername").value.trim();
+      const password = document.getElementById("newPassword").value;
+
+      if (!username) {
+        alert("Please enter a username!");
+        return;
+      }
+
+      if (!validatePassword(password)) {
+        alert(
+          "Invalid password! Your password must contain:\n" +
+          "- At least 8 characters\n" +
+          "- At least one uppercase letter\n" +
+          "- At least one lowercase letter\n" +
+          "- At least one number\n" +
+          "- At least one special character (e.g., @, $, !, %, *)"
+        );
+        return;
+      }
+
+      // Save new user (temporarily stored in localStorage for demo purposes)
+      const users = JSON.parse(localStorage.getItem("users")) || {};
+      if (users[username]) {
+        alert("Username already exists. Please choose a different username.");
+      } else {
+        users[username] = password;
+        localStorage.setItem("users", JSON.stringify(users));
+        alert("Sign-up successful! Please login.");
+        window.location.href = "login.html"; // Redirect to the login page
+      }
+    }
+  </script>
+</body>
+</html>

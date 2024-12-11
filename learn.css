@@ -1,0 +1,142 @@
+/* General Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  /* Add background image and gradient together */
+  background: url('https://www.digitalauthority.me/wp-content/uploads/2023/07/shutterstock_1708142914-1.jpg') no-repeat center center fixed, linear-gradient(135deg, #6a11cb, #2575fc);
+  background-size: cover;  /* Ensures the image covers the entire body */
+  color: #fff;
+}
+
+.container {
+  max-width: 800px;
+  margin: 50px auto;
+  background: #073c6d;  /* Solid color */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  text-align: center;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+p {
+  font-size: 1rem;
+  color: #d4d4d4;
+}
+
+/* Form Styles */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+label {
+  font-weight: bold;
+  text-align: left;
+  color: #ffffffb3;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  background: #fff;
+  color: #139d6a;
+}
+
+input::placeholder {
+  color: #240d5e;
+}
+
+button {
+  background: #6a11cb;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: #2575fc;
+}
+
+/* Recommendation Section */
+.output {
+  margin-top: 20px;
+  padding: 15px;
+  background: #ffffff33;
+  border-radius: 5px;
+  color: #bd1a66;
+  text-align: left;
+}
+
+/* Progress Tracker Styles */
+#progressTracker {
+  margin-top: 30px;
+  text-align: center;
+}
+
+#progressTracker h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+#progressList {
+  background: #ffffff22;
+  padding: 15px;
+  border-radius: 5px;
+  max-height: 150px;
+  overflow-y: auto;
+  margin: 10px 0;
+}
+
+#progressList ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#progressList li {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  color: #fff;
+}
+
+#progressPercentage {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* Media Query for Responsiveness */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  form label {
+    text-align: center;
+  }
+
+  input, select, button {
+    font-size: 1rem;
+  }
+}

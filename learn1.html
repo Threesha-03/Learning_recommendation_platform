@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learning Platform</title>
+  <style>
+    /* Base styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 50px auto;
+      background: #333;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      padding: 20px 40px;
+      color: white;
+    }
+
+    h1 {
+      color: #4CAF50;
+      text-align: center;
+    }
+
+    p {
+      text-align: center;
+      font-size: 1.2em;
+      margin-bottom: 30px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input, select, button {
+      font-size: 1em;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      transition: all 0.3s;
+    }
+
+    input:focus {
+      border-color: #4CAF50;
+      outline: none;
+      box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+    }
+
+    button {
+      background-color: rgba(0, 255, 76, 0.715);
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: #3e8e41;
+    }
+
+    button:disabled {
+      background-color: #9e9e9e;
+      cursor: not-allowed;
+    }
+
+    .output {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    #progressPercentage {
+      margin-top: 10px;
+      font-size: 1.2em;
+      color: #333;
+    }
+
+    #progressBar {
+      width: 100%;
+      background-color: #ddd;
+      border-radius: 10px;
+      height: 20px;
+      margin-top: 10px;
+    }
+
+    #progressFill {
+      height: 100%;
+      background-color: #4CAF50;
+      width: 0%;
+      border-radius: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>AI-Powered Personalized Learning Platform</h1>
+    <p>Enter your strengths, weaknesses, or learning preferences, and we'll personalize your learning path!</p>
+
+    <form>
+      <label for="strengths">Strength:</label>
+      <input type="text" id="strengths" placeholder="e.g., cooking, math">
+      <label for="weaknesses">Weakness:</label>
+      <input type="text" id="weaknesses" placeholder="e.g., coding, drawing">
+      <label for="learningStyle">Learning Style:</label>
+      <select id="learningStyle">
+        <option value="auditory">Auditory</option>
+        <option value="visual">Visual</option>
+        <option value="kinesthetic">Kinesthetic</option>
+      </select>
+    </form>
+
+    <div id="recommendation" class="output"></div>
+
+    <button onclick="getRecommendation()">Get Recommendation</button>
+    <button onclick="watchVideo(1)">Watch Video 1</button>
+    <button onclick="watchVideo(2)">Watch Video 2</button>
+
+    <!-- Progress Bar -->
+    <div id="progressBar">
+      <div id="progressFill"></div>
+    </div>
+    <div id="progressPercentage">Progress: 0%</div>
+  </div>
+
+  <script>
+    let progress = 0; // Initial progress
+
+    const skillRecommendations = {
+  cooking: {
+    auditory: [
+      { topic: "Cooking Podcast: Cooking with the Pros", link:"https://podcasts.apple.com/us/podcast/good-food/id1476845124" },
+    ],
+    visual: [
+      { topic: "Beginner Cooking Techniques - YouTube", link:"https://youtu.be/wnHxGBnLP5w?si=NXZbEmy0ZQYUO1cE" },
+    ],
+    kinesthetic: [
+      { topic: "Cook with Me - Interactive Cooking Guide", link:"https://cookwithmeonline.com/" },
+    ],
+  },
+  coding: {
+    auditory: [
+      { topic: "Coding Podcast: Learn to Code", link: "https://www.cloudways.com/blog/best-coding-podcasts/" },
+    ],
+    visual: [
+      { topic: "Learn JavaScript Basics - YouTube", link: "https://youtu.be/eKqY-oP1d_Y?si=mnuWRNWW2cdVFegs" },
+    ],
+    kinesthetic: [
+      { topic: "Interactive JavaScript Exercises", link: " https://medium.com/@shinik.d.cupo/kinesthetically-learning-to-code-afed015961c7" },
+    ],
+  },
+  math: {
+    auditory: [
+      { topic: "Math Podcast: Understanding Algebra", link: "https://podcasts.ox.ac.uk/series/secrets-mathematics" },
+    ],
+    visual: [
+      { topic: "Algebra Basics - YouTube", link: "https://youtu.be/JvUvxN-A5O4?si=e3ezSqB_mJ3skZjw" },
+    ],
+    kinesthetic: [
+      { topic: "Interactive Math Problems", link: " https://numberdyslexia.com/kinesthetic-learning-strategies-for-mathematics/" },
+    ],
+  },
+  drawing: {
+    visual: [
+      { topic: "Learn drawing - YouTube", link: " https://youtu.be/Wz6DrQeQ5rI?si=xGBY4RtKm4vpCYVp" },
+    ],
+    kinesthetic: [
+      { topic: "Interactive drawing Exercises", link: "https://www.thoughtco.com/the-kinesthetic-learning-style-3212046 " },
+    ],
+  },
+  dance: {
+    auditory: [
+      { topic: "Learning Podcast: Learn to dance", link: " https://library.dancetolearn.co/pages/podcast" },
+    ],
+    visual: [
+      { topic: "Learn Dancing Step By step - YouTube", link: "https://youtu.be/SAXkYgoy6cY?si=VjWKHQS4932qE_5t" },
+    ],
+  },
+
+    singing: {
+      auditory: [
+        { topic: "Singing Podcast: Learn to sing", link: "https://player.fm/podcasts/Singing-Lessons " },
+      ],
+      visual: [
+        { topic: "Learn Singing - YouTube", link: " https://youtu.be/b66-sa8kvE4?si=OKh_Yx84W9fg3Hd5" },
+      ],
+    },
+      machine_learning: {
+        auditory: [
+          { topic: "ML-Podcast: Learn to Code", link: " https://machinelearningmastery.com/5-free-podcasts-that-demystify-machine-learning-concepts/" },
+        ],
+        visual: [
+          { topic: "Learn Machine Learning Basics - YouTube", link: " https://youtu.be/gmvvaobm7eQ?si=x_vJ89QTPedJ6cx3" },
+        ],
+        kinesthetic: [
+          { topic: "Machine-learning programme", link: " https://www.sciencedirect.com/science/article/pii/S2949678023000326" },
+        ],
+      },
+        english_learning: {
+          auditory: [
+            { topic: "Eng-learning Podcast: Learn English", link: "https://improving-your-english.com/learn-english/podcasts/" },
+          ],
+          visual: [
+            { topic: "Learn English - YouTube", link: " https://youtu.be/pKRqgXt2AFY?si=OeQ-66j9iqIyQHqR" },
+          ],},
+          python: {
+            auditory: [
+              { topic: "Coding Podcast: Learn to Code", link: "https://realpython.com/podcasts/rpp/ " },
+            ],
+            visual: [
+              { topic: "Learn Python Basics - YouTube", link: " https://youtu.be/QXeEoD0pB3E?si=JIT9KsYU_JUAbxO6" },
+            ],
+          },
+        };
+
+    function getRecommendation() {
+      const strengths = document.getElementById("strengths").value.trim().toLowerCase();
+      const weaknesses = document.getElementById("weaknesses").value.trim().toLowerCase();
+      const learningStyle = document.getElementById("learningStyle").value.trim().toLowerCase();
+
+      if (!learningStyle) {
+        alert("Please select a learning style.");
+        return;
+      }
+
+      const skill = strengths || weaknesses;
+      if (!skill) {
+        alert("Please enter at least a strength or weakness.");
+        return;
+      }
+
+      const recommendation = skillRecommendations[skill]?.[learningStyle]?.[0];
+
+      const output = document.getElementById("recommendation");
+      if (recommendation) {
+        output.innerHTML = `
+          <h3>Recommendation:</h3>
+          <p><strong>Topic:</strong> ${recommendation.topic}</p>
+          <p><a href="${recommendation.link}" target="_blank">Watch Here</a></p>
+        `;
+      } else {
+        output.innerHTML = `<p>No recommendation found for ${skill} with a ${learningStyle} learning style.</p>`;
+      }
+    }
+
+    function watchVideo(videoNumber) {
+      const strengths = document.getElementById("strengths").value.trim().toLowerCase();
+      const weaknesses = document.getElementById("weaknesses").value.trim().toLowerCase();
+      const learningStyle = document.getElementById("learningStyle").value.trim().toLowerCase();
+
+      const skill = videoNumber === 1 ? strengths : weaknesses;
+
+      if (!skill || !learningStyle) {
+        alert("Please fill in both skill and learning style.");
+        return;
+      }
+
+      const recommendation = skillRecommendations[skill]?.[learningStyle]?.[0];
+
+      if (recommendation && recommendation.link) {
+        window.open(recommendation.link, "_blank");
+        updateProgress(videoNumber);
+      } else {
+        alert(`No video found for ${skill} with a ${learningStyle} learning style.`);
+      }
+    }
+
+    function updateProgress(videoNumber) {
+      if (videoNumber === 1 && progress < 50) {
+        progress = 50;
+      } else if (videoNumber === 2 && progress < 100) {
+        progress = 100;
+      }
+
+      document.getElementById("progressFill").style.width = progress + "%";
+      document.getElementById("progressPercentage").innerText = `Progress: ${progress}%`;
+    }
+  </script>
+</body>
+</html>
